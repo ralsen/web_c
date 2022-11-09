@@ -110,7 +110,7 @@ void loop() {
       // Data to send with HTTP POST
       //String httpRequestData = "{\"Host\": \"No-Name_E3_3C_13_D3\", \"IP\": \"192.168.1.48\", \"Type\": \"DS1820\", \"Version\": \"1.25\", \"Hardw\": \"NODEMCU\", \"Network\": \"janzneu\", \"MAC\": \"CC:50:E3:3C:13:D3\", \"AP-Name\": \"HOMAnet\", \"Hash\": \"0x627c7e\", \"Size\": \"0x118\", \"uptime\": \"354\"}";
 
-      String httpRequestData =  "{\"name\": \"NODEMCU\", \"ip\": \"127.0.1.1\", \"uptime\": \"" + String(millis()) + "\"" + ",\"hello\": \"world !!!\"}";
+      String httpRequestData =  "{\"name\": \"NODEMCU\", \"Method\": \"update\", \"ip\": \"127.0.1.1\", \"uptime\": \"" + String(millis()) + "\"" + ",\"hello\": \"world !!!\"}";
       // Send HTTP POST request
       int httpResponseCode = http.POST(httpRequestData);
       Serial.println(http.getString());
