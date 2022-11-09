@@ -75,7 +75,7 @@ void setup() {
     } 
   // or use this for auto generated name ESP + ChipID
   //wifiManager.autoConnect();
-  
+
   // if you get here you have connected to the WiFi
 
   server.begin();
@@ -90,7 +90,7 @@ void setup() {
 
 void loop() {
 
- //Send an HTTP POST request every 10 minutes
+ //Send an HTTP POST request every timerDelay
   if ((millis() - lastTime) > timerDelay) {
     //Check WiFi connection status
     if(WiFi.status()== WL_CONNECTED){
