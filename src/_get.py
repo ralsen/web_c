@@ -3,7 +3,18 @@ import cgi
 import sys
 import ast
 import time
-import threading
+import datetime
+import DataStore as ds
+import config as cfg
+import yaml
+import logging
+import socket
+
+x = datetime.datetime.now()
+logging.basicConfig(filename="./log/"+socket.gethostname()+x.strftime(cfg.logSuffix)+".log",
+                    level=logging.DEBUG,
+                    format='%(asctime)s :: %(levelname)-s :: %(message)s [%(name)s] [%(lineno)s]',
+                    datefmt=cfg.datefmt)
 
 devices = dict()
 
@@ -80,42 +91,29 @@ class webserverHandler(BaseHTTPRequestHandler):
 
   def update(self, data):
     try:
-      devices[data["name"]].update(data)
-      devices[data["name"]]["cnt"] += 1
-      devices[data["name"]]["TransmitCycle"] = int(devices[data["name"]]["TransmitCycle"]) * 2
-      print("got message from: ", data["name"])
+      DataSet = dict()
+      DataSet[data["MAC"].replace(":", "_")] = data
+      ds.handle_DataSet(DataSet)      
     except Exception as err:
-      print ("unknown device: ", err)
-      devices[data["name"]] = dict()
-      devices[data["name"]].update(data)
-      devices[data["name"]]["cnt"] = 1
-      devices[data["name"]]["TransmitCycle"] = int(devices[data["name"]]["TransmitCycle"]) * 2
-      devices[data["name"]]["service"] = Service(data["name"])
-      print("generating: ", err)
-
-class Service():
-  MyName = ""
-  def __init__(self, DeviceName):
-      self.MyName = DeviceName
-      threading.Thread(target=self._monitoring_thread, daemon=True).start()
-
-  def _monitoring_thread(self):
-    while True:
-      if devices[self.MyName]["TransmitCycle"]:
-        devices[self.MyName]["TransmitCycle"] -= 1
-      else:
-        print("Device: ", self.MyName, " sendet nicht mehr")
-      time.sleep(1)
+      logging.info("update went wrong: ")
+      print ("update went wrong: ", err, " - ", type(err))
 
 def main():
-    try:
-        server = HTTPServer((hostName, serverPort), webserverHandler)
-        print("Server started http://%s:%s" % (hostName, serverPort))
-        server.serve_forever()
+  logging.info("---------- starting ServESP - server ----------")
 
-    except KeyboardInterrupt:
-        print(" ^C entered stopping web server...")
-        server.socket.close()
+  with open("datastore.yml", "r") as file:
+      print(file)
+      loc = yaml.safe_load(file)
+  #cfg.update(yaml.safe_load(open(cfg["pathes"]["CONFIG_PATH"] + cfg[manner]["DATASTORE_YML"])))
+
+  try:
+      server = HTTPServer((hostName, serverPort), webserverHandler)
+      print("Server started http://%s:%s" % (hostName, serverPort))
+      server.serve_forever()
+
+  except KeyboardInterrupt:
+      print(" ^C entered stopping web server...")
+      server.socket.close()
 
 
 if __name__ == '__main__':
