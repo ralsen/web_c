@@ -1,0 +1,206 @@
+# for each signal from DBC file or self generated data its necessary to define a Store here with the keys:
+#   _Common keys and values_
+#   FORMAT:
+#       MULTI_CSV:
+#           csv-file with all declared values in one file
+#           file name: <StoreName>-<date>__<time>
+#       SINGLE_CSV:
+#           cvs-file(s), each for every declared value
+#           file name: <StoreName>_<ShelfName>_<STORE_MODE>-<date>__<time>
+#   MERGE:
+#       Datastores with "MERGE" are virtual Stores. 
+#       They dont receive Data from nowhere, they fetch data from sources in the list below "MERGE"
+#       !!! They have no associated real sending device !!!
+#   FILLED_UP:  
+#       a Flag, if defined MULTICSV-files have no empty columns (like ",,"). These gap(s) are filled with the latest known value(s)
+#       otherwise (if not defined) there are gap(s) if no current value is available
+#   RELOAD_TIMEOUT:
+#       the reload count value to to check if the Store is still alive 
+#       can be omitted
+#   TIMEOUT:
+#       the current timeout value. 
+#
+#   _keys and values for each DataShelf
+#   RELOAD_CNT:
+#       the reload count value for STORE_MODE = COUNT and STORE_MODE = AVR
+#       can be omitted for other STORE_MODEs
+#   CNT:
+#       the current count value. 
+#   STORE_MODES: 
+#      NONE: 
+#         dont care for this signal
+#      CHANGE:
+#           only value changes are stored, just to save space 
+#      COUNT:
+#          count RELOAD_CNT values and than store one, just to save space
+#      AVR:
+#          average calculation with RELOAD_CNT values
+#      ALL:
+#           saving everything
+#   MIN:
+#       Min value for this signal, if not used set it i.e. to 0 or any other numeric value
+#   MAX:
+#       Max value for this signal, if not used set it i.e. to 0 or any other numeric value
+#   CURRENT_IN_RANGE:
+#       the signal is within MIN and MAX
+#       MIN, MAX and IN_RANGE can be omitted if not used
+#   AVR_IN_RANGE:
+#       same as CURRENT_IN_RANGE but checked against the AVR value(s)
+#   DECIMALS:
+#       number of digits after comma (for float)
+#
+#   structure of a Storedefinition:
+#   <StoreName>: (with the following StoreShelf")
+#           Commons:
+#               keys and values as descirbed above
+#           <shelf_1>:
+#               keys and values as descirbed above
+#           <shelf_2>:
+#               keys and values as descirbed above
+#           <shelf_3>:
+#               keys and values as descirbed above
+#           ...
+#   "Commons" is a ShelfName wich every Store must have.
+
+DataStores:
+    AC_0B_FB_D6_41_74:
+        Commons:                # these are Values for the messages/Datasets, they are mandatory and must have always the same names
+            TIMEOUT: 10         # time in units defined in config.yml, set both to 0 if no timeout check is needed
+            RELOAD_TIMEOUT: TransmitCycle     # default time ro reload TIME counter
+            FORMAT: MULTI_CSV
+        name: 
+            STORE_MODE: "CHANGE"
+        IP: 
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        Version: 
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        Hardware: 
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        Network: 
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        APName: 
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        MAC:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        TransmitCycle:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        MeasuringCycle:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        Hash:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        Size:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        PageReload:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        Server:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        delivPages:  
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        goodTrans:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        badTrans: 
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        LED:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        Adress_0:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        Value_0:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        Adress_1:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        Value_1:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+
+
+
+    CC_50_E3_3C_17_68:
+        Commons:                # these are Values for the messages/Datasets, they are mandatory and must have always the same names
+            TIMEOUT: 10         # time in units defined in config.yml, set both to 0 if no timeout check is needed
+            RELOAD_TIMEOUT: TransmitCycle     # default time ro reload TIME counter
+            FORMAT: MULTI_CSV
+        name: 
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        IP: 
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        Version: 
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        Hardware: 
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        Network: 
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        APName: 
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        MAC:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        TransmitCycle:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        MeasuringCycle:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        Hash:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        Size:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        PageReload:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        Server:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        delivPages':  
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        goodTrans':
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        badTrans': 
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        LED:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        uptime:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        ontime: 
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        offtime: 
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        cycles:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
+        status:
+            STORE_MODE: "CHANGE"
+            STORE_MODE_DATA: ""
