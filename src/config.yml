@@ -1,0 +1,24 @@
+
+DATASTORE_YML: "datastore.yml"
+
+pathes:
+    data: "./data/"                 # not used yet
+    DATA_STORE_PATH: "./data/"             # all CAN-data files from CAN-Store.py
+    CONFIG_PATH: "./"                  # path for CAN-dbc and associated yml
+    log: "./log/"
+
+suffixes:
+    log: # "-%Y_%m_%d__%H-%M-%S"     #date and time
+         "-%Y_%m_%d"                #date only
+         #""                         # hostname only
+    data: "-%Y_%m_%d__%H-%M-%S"     #date and time
+          #"-%Y_%m_%d"               #date only
+          #""                        #without date and time
+
+debug:
+    datefmt: "%d.%m.%Y %H:%M:%S"      # normal
+    #datefmt: "%d.%m.%Y %H:%M:%S.%s"   # fine (with ms)
+    hirestime: True                    # time resolution in data logs (true=ms, false=s)
+    logYML: True                      #put the yml-file into the log
+    verbose: True
+
