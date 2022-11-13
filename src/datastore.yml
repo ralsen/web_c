@@ -65,142 +65,110 @@
 DataStores:
     AC_0B_FB_D6_41_74:
         Commons:                # these are Values for the messages/Datasets, they are mandatory and must have always the same names
-            TIMEOUT: 10         # time in units defined in config.yml, set both to 0 if no timeout check is needed
+            TIMEOUT: 30         # time in units defined in config.yml, set both to 0 if no timeout check is needed
             RELOAD_TIMEOUT: TransmitCycle     # default time ro reload TIME counter
             FORMAT: MULTI_CSV
+            DATABASE:
+                - [§RRD, name, Value_0, STORE_MODE_DATA,
+                               Value_1, STORE_MODE_DATA,
+                               §FILE, "OutTemp.txt"]
         name: 
             STORE_MODE: "CHANGE"
         IP: 
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         Version: 
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         Hardware: 
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         Network: 
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         APName: 
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         MAC:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         TransmitCycle:
+            CURRENT_DATA: 20
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         MeasuringCycle:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         Hash:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         Size:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         PageReload:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         Server:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         delivPages:  
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         goodTrans:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         badTrans: 
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         LED:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
+        uptime:
+            STORE_MODE: "CHANGE"
         Adress_0:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         Value_0:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         Adress_1:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         Value_1:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
 
 
 
     CC_50_E3_3C_17_68:
         Commons:                # these are Values for the messages/Datasets, they are mandatory and must have always the same names
-            TIMEOUT: 10         # time in units defined in config.yml, set both to 0 if no timeout check is needed
+            TIMEOUT: 30         # time in units defined in config.yml, set both to 0 if no timeout check is needed
             RELOAD_TIMEOUT: TransmitCycle     # default time ro reload TIME counter
             FORMAT: MULTI_CSV
         name: 
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         IP: 
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         Version: 
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         Hardware: 
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         Network: 
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         APName: 
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         MAC:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         TransmitCycle:
+            CURRENT_DATA: 20
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         MeasuringCycle:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         Hash:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         Size:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         PageReload:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         Server:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         delivPages':  
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         goodTrans':
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         badTrans': 
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         LED:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         uptime:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         ontime: 
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         offtime: 
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         cycles:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
         status:
             STORE_MODE: "CHANGE"
-            STORE_MODE_DATA: ""
+
+

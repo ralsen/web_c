@@ -9,6 +9,7 @@ import datetime
 import threading
 import re
 import string
+import rrdtool
 
 logger = logging.getLogger(__name__)
 
@@ -66,6 +67,7 @@ class Service():
             time.sleep(1)
 
     def handle_DataSet(self, DataSet):
+        #print(DS.ds)
         timeStamp = str(int(time.time()))
         for key in DataSet.keys():
             try:
@@ -200,6 +202,36 @@ class Service():
                 data[self.MyName][str[1]] = data[self.MyName][str[1]] + DS.ds[str[i]][str[i+1]][str[i+2]]
         return data
 
+    def DataBase(self):
+        try:
+            DBInfo = DS.ds[self.MyName]["Commons"]["DATABASE"]
+        except: return
+        rrdstr = "N"
+        rrdFile = DS.ds[self.MyName][DBInfo[0][1]]["STORE_MODE_DATA"]
+        if DBInfo[0][0] == "§RRD":
+            for DBStr in DBInfo:
+                for i in range(2, len(DBStr), 2):
+                    if DBStr[i] != "§FILE":
+                        rrdstr += ":" + DS.ds[self.MyName][DBStr[i]][DBStr[i+1]]
+                    else:
+                        outTempFile = DBStr[i+1]
+            if (len(DBInfo[0]) == 6):
+                rrdstr += ":0"
+            
+            try:
+                with open(outTempFile, 'r') as DataFile:
+                    rrdstr += ":" + DataFile.read()
+            except: 
+                logging.error("cant open OutTempFile")
+                print("cant open OutTempFile")
+            print ("rrdFile: ", rrdFile, " - outTempFile: ", outTempFile, " - ", "rrdstr: ", rrdstr)
+            try:
+                rrdtool.update(rrdFile + ".rrd", rrdstr)
+            except:
+                logging.error("cant open RRD-Database File")
+                print("cant open RRD-Database File")
+
+
     def merge(self):
         data = dict()
         data[self.MyName] = dict()
@@ -235,6 +267,7 @@ class Service():
         except:
             logging.error("could not write data.")
             print("could not write data.") 
+        self.DataBase()
 
 def pick(Store, Shelf, DataBox):
     return DS.ds[Store][Shelf][DataBox]
@@ -252,3 +285,205 @@ def handle_DataSet(DataSet):
 def handle_CAN(StoreName, DataSet):
     DS.ds[StoreName]["Commons"]["Service"].handle_CAN(DataSet)
     
+
+"""
+here are two example DataStore-Dictionaries
+{
+    'AC_0B_FB_D6_41_74': {
+        'Commons': {
+            'header': 'time,name,IP,Version,Hardware,Network,APName,MAC,TransmitCycle,MeasuringCycle,Hash,Size,PageReload,Server,delivPages,goodTrans,badTrans,LED,Adress_0,Value_0,Adress_1,Value_1', 
+            'Active': True, 
+            'initTime': datetime.datetime(2022, 11, 13, 11, 29, 36, 737157), 
+            'CURRENT_DATA': 0, 
+            'STORE_MODE_DATA': None, 
+            'TIMEOUT': 4, 
+            'RELOAD_TIMEOUT': 'TransmitCycle', 
+            'FORMAT': 'MULTI_CSV', 
+            'Service': <DataStore.Service object at 0x760dd210>}, 
+        'name': {
+            'CURRENT_DATA': 'Schnell_AC_0B_FB_D6_41_74', 
+            'STORE_MODE_DATA': 'Schnell_AC_0B_FB_D6_41_74', 
+            'STORE_MODE': 'CHANGE'}, 
+        'IP': {
+            'CURRENT_DATA': '192.168.1.41', 
+            'STORE_MODE_DATA': '192.168.1.41', 
+            'STORE_MODE': 'CHANGE'}, 
+        'Version': {
+            'CURRENT_DATA': '4.0a', 
+            'STORE_MODE_DATA': '4.0a', 
+            'STORE_MODE': 'CHANGE'}, 
+        'Hardware': {
+            'CURRENT_DATA': 'NODEMCU', 
+            'STORE_MODE_DATA': 'NODEMCU', 
+            'STORE_MODE': 'CHANGE'}, 
+        'Network': {
+            'CURRENT_DATA': 'DS1820', 
+            'STORE_MODE_DATA': 'DS1820', 
+            'STORE_MODE': 'CHANGE'}, 
+        'APName': {
+            'CURRENT_DATA': 'ESPnet', 
+            'STORE_MODE_DATA': 'ESPnet', 
+            'STORE_MODE': 'CHANGE'}, 
+        'MAC': {
+            'CURRENT_DATA': 'AC:0B:FB:D6:41:74', 
+            'STORE_MODE_DATA': 'AC:0B:FB:D6:41:74', 
+            'STORE_MODE': 'CHANGE'}, 
+        'TransmitCycle': {
+            'CURRENT_DATA': '3', 
+            'STORE_MODE_DATA': '3', 
+            'STORE_MODE': 'CHANGE'}, 
+        'MeasuringCycle': {
+            'CURRENT_DATA': '150', 
+            'STORE_MODE_DATA': '150', 
+            'STORE_MODE': 'CHANGE'}, 
+        'Hash': {
+            'CURRENT_DATA': '4dcddc', 
+            'STORE_MODE_DATA': '4dcddc', 
+            'STORE_MODE': 'CHANGE'}, 
+        'Size': {
+            'CURRENT_DATA': '364', 
+            'STORE_MODE_DATA': '364', 
+            'STORE_MODE': 'CHANGE'}, 
+        'PageReload': {
+            'CURRENT_DATA': '10', 
+            'STORE_MODE_DATA': '10', 
+            'STORE_MODE': 'CHANGE'}, 
+        'Server': {
+            'CURRENT_DATA': '192.168.1.6', 
+            'STORE_MODE_DATA': '192.168.1.6', 
+            'STORE_MODE': 'CHANGE'}, 
+        'delivPages': {
+            'CURRENT_DATA': '12', 
+            'STORE_MODE_DATA': '12', 
+            'STORE_MODE': 'CHANGE'}, 
+        'goodTrans': {
+            'CURRENT_DATA': '2486', 
+            'STORE_MODE_DATA': '2486', 
+            'STORE_MODE': 'CHANGE'}, 
+        'badTrans': {
+            'CURRENT_DATA': '0', 
+            'STORE_MODE_DATA': '0', 
+            'STORE_MODE': 'CHANGE'}, 
+        'LED': {
+            'CURRENT_DATA': '1', 
+            'STORE_MODE_DATA': '1', 
+            'STORE_MODE': 'CHANGE'}, 
+        'Adress_0': {
+            'CURRENT_DATA': '0000000000000000', 
+            'STORE_MODE_DATA': '0000000000000000', 
+            'STORE_MODE': 'CHANGE'}, 
+        'Value_0': {
+            'CURRENT_DATA': '-127.00', 
+            'STORE_MODE_DATA': '-127.00', 
+            'STORE_MODE': 'CHANGE'}, 
+        'Adress_1': {
+            'CURRENT_DATA': '0000000000000000', 
+            'STORE_MODE_DATA': '0000000000000000', 
+            'STORE_MODE': 'CHANGE'}, 
+        'Value_1': {
+            'CURRENT_DATA': '-127.00', 
+            'STORE_MODE_DATA': '-127.00', 
+            'STORE_MODE': 'CHANGE'}
+        }, 
+    'CC_50_E3_3C_17_68': {
+        'Commons': {
+            'header': "time,name,IP,Version,Hardware,Network,APName,MAC,TransmitCycle,MeasuringCycle,Hash,Size,PageReload,Server,delivPages',goodTrans',badTrans',LED,uptime,ontime,offtime,cycles,status", 
+            'Active': True, 
+            'initTime': datetime.datetime(2022, 11, 13, 11, 29, 36, 738283), 
+            'CURRENT_DATA': 0, 
+            'STORE_MODE_DATA': None, 
+            'TIMEOUT': 5, 
+            'RELOAD_TIMEOUT': 'TransmitCycle', 
+            'FORMAT': 'MULTI_CSV', 
+            'Service': <DataStore.Service object at 0x760dd110>}, 
+        'name': {
+            'CURRENT_DATA': 'Langsam_CC_50_E3_3C_17_68', 
+            'STORE_MODE_DATA': 'Langsam_CC_50_E3_3C_17_68', 
+            'STORE_MODE': 'CHANGE'}, 
+        'IP': {
+            'CURRENT_DATA': '192.168.1.5', 
+            'STORE_MODE_DATA': '192.168.1.5', 
+            'STORE_MODE': 'CHANGE'}, 
+        'Version': {
+            'CURRENT_DATA': '4.0a', 
+            'STORE_MODE_DATA': '4.0a', 
+            'STORE_MODE': 'CHANGE'}, 
+        'Hardware': {
+            'CURRENT_DATA': 'NODEMCU', 
+            'STORE_MODE_DATA': 'NODEMCU', 
+            'STORE_MODE': 'CHANGE'}, 
+        'Network': {
+            'CURRENT_DATA': 'Switch', 
+            'STORE_MODE_DATA': 'Switch', 
+            'STORE_MODE': 'CHANGE'}, 
+        'APName': {
+            'CURRENT_DATA': 'ESPnet', 
+            'STORE_MODE_DATA': 'ESPnet', 
+            'STORE_MODE': 'CHANGE'}, 
+        'MAC': {
+            'CURRENT_DATA': 'CC:50:E3:3C:17:68', 
+            'STORE_MODE_DATA': 'CC:50:E3:3C:17:68', 
+            'STORE_MODE': 'CHANGE'}, 
+        'TransmitCycle': {
+            'CURRENT_DATA': '5', 
+            'STORE_MODE_DATA': '5', 
+            'STORE_MODE': 'CHANGE'}, 
+        'MeasuringCycle': {
+            'CURRENT_DATA': '150', 
+            'STORE_MODE_DATA': '150', 
+            'STORE_MODE': 'CHANGE'}, 
+        'Hash': {
+            'CURRENT_DATA': 'c0ba7e', 
+            'STORE_MODE_DATA': 'c0ba7e', 
+            'STORE_MODE': 'CHANGE'}, 
+        'Size': {
+            'CURRENT_DATA': '364', 
+            'STORE_MODE_DATA': '364', 
+            'STORE_MODE': 'CHANGE'}, 
+        'PageReload': {
+            'CURRENT_DATA': '10', 
+            'STORE_MODE_DATA': '10', 
+            'STORE_MODE': 'CHANGE'}, 
+        'Server': {
+            'CURRENT_DATA': '192.168.1.6', 
+            'STORE_MODE_DATA': '192.168.1.6', 
+            'STORE_MODE': 'CHANGE'}, 
+        "delivPages'": {
+            'CURRENT_DATA': 0, 
+            'STORE_MODE_DATA': '', 
+            'STORE_MODE': 'CHANGE'}, 
+        "goodTrans'": {
+            'CURRENT_DATA': 0, 
+            'STORE_MODE_DATA': '', 
+            'STORE_MODE': 'CHANGE'}, 
+        "badTrans'": {
+            'CURRENT_DATA': 0, 
+            'STORE_MODE_DATA': '', 
+            'STORE_MODE': 'CHANGE'}, 
+        'LED': {
+            'CURRENT_DATA': '1', 
+            'STORE_MODE_DATA': '1', 
+            'STORE_MODE': 'CHANGE'}, 
+        'uptime': {
+            'CURRENT_DATA': '147202', 
+            'STORE_MODE_DATA': '147202', 
+            'STORE_MODE': 'CHANGE'}, 
+        'ontime': {
+            'CURRENT_DATA': '86438', 
+            'STORE_MODE_DATA': '86438', 
+            'STORE_MODE': 'CHANGE'}, 
+        'offtime': {
+            'CURRENT_DATA': '60764', 
+            'STORE_MODE_DATA': '60764', 
+            'STORE_MODE': 'CHANGE'}, 
+        'cycles': {
+            'CURRENT_DATA': '2', 
+            'STORE_MODE_DATA': '2', 
+            'STORE_MODE': 'CHANGE'}, 
+        'status': {
+            'CURRENT_DATA': 'AUS', 
+            'STORE_MODE_DATA': 'AUS', 
+            'STORE_MODE': 'CHANGE'}
+        }
+    }    
+"""
