@@ -44,7 +44,6 @@ class DS():
                     self.ds[StoreName][ShelfTag][DataBox] = Value
             self.ds[StoreName]["Commons"]["Service"] = Service(StoreName) # start store handling
 
-
 class Service():
     MyName = ""
     def __init__(self, StoreName):
@@ -68,7 +67,6 @@ class Service():
             time.sleep(1)
 
     def handle_DataSet(self, DataSet):
-        #print(DS.ds)
         timeStamp = str(int(time.time()))
         for key in DataSet.keys():
             try:
@@ -86,6 +84,7 @@ class Service():
             DS.ds[self.MyName]["Commons"]["TIMEOUT"] = DS.ds[self.MyName]["Commons"]["RELOAD_TIMEOUT"]
         else:
             DS.ds[self.MyName]["Commons"]["TIMEOUT"] = int(DS.ds[self.MyName][DS.ds[self.MyName]["Commons"]["RELOAD_TIMEOUT"]]["CURRENT_DATA"]) * 2
+
         csv_line = timeStamp
         update = False
         resstr = ""
@@ -97,7 +96,6 @@ class Service():
                 res = self.updateData(StoreShelf, DataSet.get(StoreShelf))
                 if res:
                     update = True
-
             try:
                 x = DS.ds[self.MyName][DataShelf]["DECIMALS"] 
             except:
@@ -203,35 +201,57 @@ class Service():
                 data[self.MyName][str[1]] = data[self.MyName][str[1]] + DS.ds[str[i]][str[i+1]][str[i+2]]
         return data
 
+
+#   sample rrdstr:  N:-127.00:-127.00:8.76
     def DataBase(self):
         try:
             DBInfo = DS.ds[self.MyName]["Commons"]["DATABASE"]
         except: return
-        rrdstr = "N"
-        rrdFile = DS.ds[self.MyName][DBInfo[0][1]]["STORE_MODE_DATA"]
-        if DBInfo[0][0] == "§RRD":
-            for DBStr in DBInfo:
-                for i in range(2, len(DBStr), 2):
-                    if DBStr[i] != "§FILE":
-                        rrdstr += ":" + DS.ds[self.MyName][DBStr[i]][DBStr[i+1]]
-                    else:
-                        outTempFile = DBStr[i+1]
-            if (len(DBInfo[0]) == 6):
-                rrdstr += ":0"
-            
+        print("DBInfo: ", DBInfo)
+        if DBInfo[0][0] == "RRD":
+            rrdFile = DS.ds[self.MyName][DBInfo[0][1][1:]]["STORE_MODE_DATA"] + ".rrd"
+            print("File: ", rrdFile)
+            rrdstr = "N"
+        for DBStr in DBInfo:
+            if DBStr[0][:] == "RRD":
+                print("wir handlen RRDs")
+                print ("###> ", DBStr[0][:], "---> ", DBInfo)
+            for i in range(0, len(DBStr), 3):
+                print(i)
+                self.getDBValue(DBStr[i:i+3])
+                if (DBStr[i] == "SELF"):
+                    store = self.MyName
+                else:
+                    store = DBStr[i]
+                if DBStr[i+1][0] == "§":
+                    pass #rrdstr += ":" + DS.ds[store][DBStr[i+1][1:]][DBStr[i+2]]
+                else:
+                    print("Konstanten: ", DBStr[i+1])
+                    if DBStr[i+1] == "FILE":
+                        print("->FILE")
+                        outTempFile = DBStr[i+2]
+                    if DBStr[i+1] == "CONST":
+                        print("->CONST")
+                        rrdstr += ":" + DBStr[i+2]
+
+            print("rrd: ", rrdstr)            
+            print("rrdFile: ", rrdFile)
+            #print("outTempfile: ", outTempFile)
             try:
                 with open(outTempFile, 'r') as DataFile:
                     rrdstr += ":" + DataFile.read()
             except: 
                 logging.error("cant open OutTempFile")
                 print("cant open OutTempFile")
-            print ("rrdFile: ", rrdFile, " - outTempFile: ", outTempFile, " - ", "rrdstr: ", rrdstr)
+            #print ("rrdFile: ", rrdFile, " - outTempFile: ", outTempFile, " - ", "rrdstr: ", rrdstr)
             try:
-                rrdtool.update(rrdFile + ".rrd", rrdstr)
+                rrdtool.update(rrdFile, rrdstr)
             except:
                 logging.error("cant open RRD-Database File")
                 print("cant open RRD-Database File")
 
+    def getDBValue(self, DBStr):
+        print("### getDBValue ###: ", DBStr)
 
     def merge(self):
         data = dict()
@@ -288,6 +308,21 @@ def handle_CAN(StoreName, DataSet):
     
 
 """
+                    if (DBStr[i] == "SELF"):
+                        store = self.MyName
+                    else:
+                        store = DBStr[i]
+                    if DBStr[i+1][0] == "§":
+                        rrdstr += ":" + DS.ds[store][DBStr[i+1][1:]][DBStr[i+2]]
+                    else:
+                        print("Konstanten: ", DBStr[i+1])
+                        if DBStr[i+1] == "FILE":
+                            print("->FILE")
+                            outTempFile = DBStr[i+2]
+                        if DBStr[i+1] == "CONST":
+                            print("->CONST")
+                            rrdstr += ":" + DBStr[i+2]
+
 here are two example DataStore-Dictionaries
 {
     'AC_0B_FB_D6_41_74': {
@@ -487,4 +522,5 @@ here are two example DataStore-Dictionaries
             'STORE_MODE': 'CHANGE'}
         }
     }    
+
 """
