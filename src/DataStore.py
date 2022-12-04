@@ -44,6 +44,7 @@ class DS():
                     self.ds[StoreName][ShelfTag][DataBox] = Value
             self.ds[StoreName]["Commons"]["Service"] = Service(StoreName) # start store handling
 
+
 class Service():
     MyName = ""
     def __init__(self, StoreName):
