@@ -17,13 +17,16 @@ datefmt = cfg["debug"]["datefmt"]
 hirestime = cfg["debug"]["hirestime"]
 
 
-with open(cfg["pathes"]["CONFIG_PATH"] + cfg["DATASTORE_YML"], "r") as file:    
+with open(cfg["pathes"]["ROOT_PATH"] + cfg["DATASTORE_YML"], "r") as file:    
     loc = yaml.safe_load(file)
-cfg.update(yaml.safe_load(open(cfg["pathes"]["CONFIG_PATH"] + cfg["DATASTORE_YML"])))
+cfg.update(yaml.safe_load(open(cfg["pathes"]["ROOT_PATH"] + cfg["DATASTORE_YML"])))
 
-DataStorePath = cfg["pathes"]["DATA_STORE_PATH"]
+#DataStorePath = cfg["pathes"]["ROOT_PATH"] + cfg["pathes"]["DATA_STORE_PATH"]
+LogPath = cfg["pathes"]["ROOT_PATH"] + cfg["pathes"]["LOG"]
+DataPath = cfg["pathes"]["ROOT_PATH"] + cfg["pathes"]["DATA"]
+RRDPath =  cfg["pathes"]["ROOT_PATH"] + cfg["pathes"]["RRD"]
 
-with open(cfg["pathes"]["CONFIG_PATH"] + cfg["DATASTORE_YML"], "r") as file:
+with open(cfg["pathes"]["ROOT_PATH"] + cfg["DATASTORE_YML"], "r") as file:
     StoreYML = yaml.safe_load(file)
 
 ds.DS(StoreYML) ######
