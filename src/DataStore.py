@@ -9,7 +9,7 @@ import datetime
 import threading
 import re
 import string
-import rrdtool
+#import rrdtool
 
 logger = logging.getLogger(__name__)
 
@@ -203,39 +203,24 @@ class Service():
 
 
 #   sample rrdstr:  N:-127.00:-127.00:8.76
+
     def DataBase(self):
         try:
             DBInfo = DS.ds[self.MyName]["Commons"]["DATABASE"]
         except: return
-        print("DBInfo: ", DBInfo)
+        #print("DBInfo: ", DBInfo)
         if DBInfo[0][0] == "RRD":
             rrdFile = DS.ds[self.MyName][DBInfo[0][1][1:]]["STORE_MODE_DATA"] + ".rrd"
-            print("File: ", rrdFile)
+            #print("File: ", rrdFile)
             rrdstr = "N"
+        
         for DBStr in DBInfo:
-            if DBStr[0][:] == "RRD":
-                print("wir handlen RRDs")
-                print ("###> ", DBStr[0][:], "---> ", DBInfo)
             for i in range(0, len(DBStr), 3):
-                print(i)
+                #print(i)
                 self.getDBValue(DBStr[i:i+3])
-                if (DBStr[i] == "SELF"):
-                    store = self.MyName
-                else:
-                    store = DBStr[i]
-                if DBStr[i+1][0] == "§":
-                    pass #rrdstr += ":" + DS.ds[store][DBStr[i+1][1:]][DBStr[i+2]]
-                else:
-                    print("Konstanten: ", DBStr[i+1])
-                    if DBStr[i+1] == "FILE":
-                        print("->FILE")
-                        outTempFile = DBStr[i+2]
-                    if DBStr[i+1] == "CONST":
-                        print("->CONST")
-                        rrdstr += ":" + DBStr[i+2]
 
-            print("rrd: ", rrdstr)            
-            print("rrdFile: ", rrdFile)
+            #print("rrd: ", rrdstr)            
+            #print("rrdFile: ", rrdFile)
             #print("outTempfile: ", outTempFile)
             try:
                 with open(outTempFile, 'r') as DataFile:
@@ -245,13 +230,27 @@ class Service():
                 print("cant open OutTempFile")
             #print ("rrdFile: ", rrdFile, " - outTempFile: ", outTempFile, " - ", "rrdstr: ", rrdstr)
             try:
-                rrdtool.update(rrdFile, rrdstr)
+                print (rrdFile, " - ", rrdstr)
+                #rrdtool.update(rrdFile, rrdstr)
             except:
                 logging.error("cant open RRD-Database File")
                 print("cant open RRD-Database File")
 
     def getDBValue(self, DBStr):
-        print("### getDBValue ###: ", DBStr)
+        if DBStr[1] == "CONST" or DBStr[1] == "FILE":
+            #print("getting --> ", DBStr[2])
+            return DBStr[2]
+
+        if DBStr[0] == "SELF":
+            store = self.MyName
+        elif DBStr[0][0] == "§":
+            store = DBStr[0][1:]
+        if DBStr[1][0] == "§":
+            i = 1
+        value = DS.ds[store][DBStr[1][i:]][DBStr[2]]
+        #print(i," 1. --> ", store, " - ", value, " - ", DBStr[1][i:], " - ", DBStr[2])
+        #print("getting --> ", store, " - ", value)
+        return value
 
     def merge(self):
         data = dict()
