@@ -3,6 +3,7 @@
 
 
 #FOL import config as config
+import config as cfg
 import logging
 import time
 import datetime
@@ -208,33 +209,32 @@ class Service():
         try:
             DBInfo = DS.ds[self.MyName]["Commons"]["DATABASE"]
         except: return
-        #print("DBInfo: ", DBInfo)
-        if DBInfo[0][0] == "RRD":
-            rrdFile = DS.ds[self.MyName][DBInfo[0][1][1:]]["STORE_MODE_DATA"] + ".rrd"
-            #print("File: ", rrdFile)
-            rrdstr = "N"
-        
-        for DBStr in DBInfo:
-            for i in range(0, len(DBStr), 3):
-                #print(i)
-                self.getDBValue(DBStr[i:i+3])
+        print(DBInfo)
+        if DBInfo[0][0][1] == "TYPE" and DBInfo[0][0][2] == "RRD":
+            self.doRRD(DBInfo)
 
-            #print("rrd: ", rrdstr)            
-            #print("rrdFile: ", rrdFile)
-            #print("outTempfile: ", outTempFile)
-            try:
-                with open(outTempFile, 'r') as DataFile:
-                    rrdstr += ":" + DataFile.read()
-            except: 
-                logging.error("cant open OutTempFile")
-                print("cant open OutTempFile")
-            #print ("rrdFile: ", rrdFile, " - outTempFile: ", outTempFile, " - ", "rrdstr: ", rrdstr)
-            try:
-                print (rrdFile, " - ", rrdstr)
-                #rrdtool.update(rrdFile, rrdstr)
-            except:
-                logging.error("cant open RRD-Database File")
-                print("cant open RRD-Database File")
+    def doRRD(self, DBInfo):        
+        print("doing RRD")
+
+        if DBInfo[0][1][1] == "FILE":
+            rrdFile = cfg.RRDPath + self.MyName + ".rrd"
+            print("rrdFile: ", rrdFile)
+            outTempFile = cfg.DataPath + DBInfo[0][1][2]
+            print("OutTempFile: ", outTempFile)
+
+            for DBStr in DBInfo[0][2:]:
+                print("###> ", DBStr)
+                store = None
+                value = None
+                if DBStr[0] == "SELF":
+                    store = self.MyName
+                elif DBStr[0][0] == "§":
+                    store = DBStr[0][1:]
+                print("using Store: ", store)
+                value = DS.ds[store][DBStr[1][1:]][DBStr[2]]
+                print("pick value: ", value)
+        else:
+            print("Parameter error in DATABASE description")
 
     def getDBValue(self, DBStr):
         if DBStr[1] == "CONST" or DBStr[1] == "FILE":
