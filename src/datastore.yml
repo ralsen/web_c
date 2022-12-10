@@ -69,19 +69,19 @@ DataStores:
             RELOAD_TIMEOUT: TransmitCycle     # default time ro reload TIME counter
             FORMAT: MULTI_CSV
             DATABASE:
-                - [SELF, CONST, "RRD", 
-                   SELF, FILE, "OutTemp.txt",
-                   SELF, §name, STORE_MODE_DATA,
-                   SELF, §Value_0, STORE_MODE_DATA,
-                   SELF, §Value_1, STORE_MODE_DATA,
-                   SELF, CONST, "0"]
+                - [[SELF, TYPE, "RRD"], 
+                   [SELF, FILE, "OutTemp.txt"],
+                   [SELF, §name, STORE_MODE_DATA],
+                   [SELF, §Value_0, STORE_MODE_DATA],
+                   [SELF, §Value_1, STORE_MODE_DATA],
+                   [SELF, CONST, "0"]]
                    
-                - [SELF, CONST, "RRD",
-                   SELF, FILE, "OutTemp.txt",
-                   SELF, §name, STORE_MODE_DATA,
-                   SELF, §Value_0, STORE_MODE_DATA,
-                   SELF, §Value_1, STORE_MODE_DATA,
-                   SELF, CONST, "0"]
+                - [[SELF, CONST, "RRD"],
+                   [SELF, FILE, "OutTemp.txt"],
+                   [SELF, §name, STORE_MODE_DATA],
+                   [SELF, §Value_0, STORE_MODE_DATA],
+                   [SELF, §Value_1, STORE_MODE_DATA],
+                   [SELF, CONST, "0"]]
                    
         name: 
             STORE_MODE: "CHANGE"
