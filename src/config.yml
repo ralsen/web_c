@@ -2,10 +2,10 @@
 DATASTORE_YML: "datastore.yml"
 
 pathes:
-    data: "./data/"                 # not used yet
-    DATA_STORE_PATH: "./data/"             # all CAN-data files from CAN-Store.py
-    CONFIG_PATH: "./"                  # path for CAN-dbc and associated yml
-    log: "./log/"
+    ROOT_PATH: "/mnt/samba/Daten/Projekte/web/"
+    DATA: "data/"                 # not used yet
+    LOG: "log/"
+    RRD: "rrd/"
 
 suffixes:
     log: # "-%Y_%m_%d__%H-%M-%S"     #date and time
