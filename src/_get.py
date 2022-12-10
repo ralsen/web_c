@@ -1,3 +1,4 @@
+import config as cfg
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import cgi
 import sys
@@ -5,7 +6,6 @@ import ast
 import time
 import datetime
 import DataStore as ds
-import config as cfg
 import yaml
 import logging
 import socket
