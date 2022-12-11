@@ -202,54 +202,49 @@ class Service():
                 data[self.MyName][str[1]] = data[self.MyName][str[1]] + DS.ds[str[i]][str[i+1]][str[i+2]]
         return data
 
-
-#   sample rrdstr:  N:-127.00:-127.00:8.76
-
     def DataBase(self):
+        print("???????????????", self.MyName)
         try:
-            DBInfo = DS.ds[self.MyName]["Commons"]["DATABASE"]
-        except: return
-        print(DBInfo)
-        if DBInfo[0][0][1] == "TYPE" and DBInfo[0][0][2] == "RRD":
-            self.doRRD(DBInfo)
+            self.doRRD()
+        except Exception as err:    
+            print("fehlr in RRD-Verarbeitung: ", err)
 
-    def doRRD(self, DBInfo):        
+    def doRRD(self):        
         print("doing RRD")
+        DBInfo = DS.ds[self.MyName]["Commons"]["RRD_DB"]
+        for block in range(len(DBInfo)):
+            rrdstr = "N:"
+            for line in range(len(DBInfo[block])):
+                res = self.getRRDValue(DBInfo[block][line])
+                if DBInfo[block][line][0] == "OUTFILE":
+                    rrdfile = str(res) + ".rrd"
+                else: rrdstr += ":" + res
+                #print("--->>>", DBInfo[0])
+                #print ("--->>>>", block, " - ", line, " - ", DBInfo[block][line], " - ", res, rrdstr, end="\r\n")
+            print(rrdfile, " - ", rrdstr, end="\r\n\r\n")
 
-        if DBInfo[0][1][1] == "FILE":
-            rrdFile = cfg.RRDPath + self.MyName + ".rrd"
-            print("rrdFile: ", rrdFile)
-            outTempFile = cfg.DataPath + DBInfo[0][1][2]
-            print("OutTempFile: ", outTempFile)
+        return    
 
-            for DBStr in DBInfo[0][2:]:
-                print("###> ", DBStr)
-                store = None
-                value = None
-                if DBStr[0] == "SELF":
-                    store = self.MyName
-                elif DBStr[0][0] == "§":
-                    store = DBStr[0][1:]
-                print("using Store: ", store)
-                value = DS.ds[store][DBStr[1][1:]][DBStr[2]]
-                print("pick value: ", value)
-        else:
-            print("Parameter error in DATABASE description")
+    def getRRDValue(self, DBStr):
+        #print("getRRDValue: ", DBStr)
 
-    def getDBValue(self, DBStr):
-        if DBStr[1] == "CONST" or DBStr[1] == "FILE":
-            #print("getting --> ", DBStr[2])
-            return DBStr[2]
-
-        if DBStr[0] == "SELF":
+        if DBStr[0][0] != "§":
             store = self.MyName
-        elif DBStr[0][0] == "§":
+        else:
             store = DBStr[0][1:]
-        if DBStr[1][0] == "§":
-            i = 1
-        value = DS.ds[store][DBStr[1][i:]][DBStr[2]]
-        #print(i," 1. --> ", store, " - ", value, " - ", DBStr[1][i:], " - ", DBStr[2])
-        #print("getting --> ", store, " - ", value)
+
+        if DBStr[1] == "CONST":
+            value = DBStr[2]
+        elif DBStr[1][0] == "§":
+            value = DS.ds[store][DBStr[1][1:]][DBStr[2]]
+        else: print("FEHELR")
+        if DBStr[0] == "INFILE":
+            try:
+                with open(cfg.DataPath + value, "r") as file:
+                    value = file.read()
+            except:
+                print("File not found: ", cfg.DataPath + value)
+        #print("getRRDValue (store): ", store, " - ", value)
         return value
 
     def merge(self):
