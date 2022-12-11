@@ -68,20 +68,19 @@ DataStores:
             TIMEOUT: 30         # time in units defined in config.yml, set both to 0 if no timeout check is needed
             RELOAD_TIMEOUT: TransmitCycle     # default time ro reload TIME counter
             FORMAT: MULTI_CSV
-            DATABASE:
-                - [[SELF, TYPE, "RRD"], 
-                   [SELF, FILE, "OutTemp.txt"],
-                   [SELF, §name, STORE_MODE_DATA],
+            RRD_DB:
+                - [[OUTFILE, §name, STORE_MODE_DATA],
                    [SELF, §Value_0, STORE_MODE_DATA],
                    [SELF, §Value_1, STORE_MODE_DATA],
-                   [SELF, CONST, "0"]]
+                   [SELF, CONST, "0"],
+                   [INFILE, CONST, "OutTemp.txt"]]
                    
-                - [[SELF, CONST, "RRD"],
-                   [SELF, FILE, "OutTemp.txt"],
-                   [SELF, §name, STORE_MODE_DATA],
+                - [[OUTFILE, CONST, blabla],
                    [SELF, §Value_0, STORE_MODE_DATA],
                    [SELF, §Value_1, STORE_MODE_DATA],
-                   [SELF, CONST, "0"]]
+                   [INFILE, CONST, "OutTemp.txt"],
+                   [§CC_50_E3_3C_17_68, §uptime, STORE_MODE_DATA],
+                   [SELF, CONST, "1"]]
                    
         name: 
             STORE_MODE: "CHANGE"
