@@ -36,6 +36,8 @@ print("Client started, sending to: ", BASE_URL)
 
 while True:
     device["uptime"] = str((time.time()))
+    device["Value_0"] = device["uptime"][-2:]
+    device["Value_1"] = str(int(time.time()))[-2:]                                             
     try:
       # print("sending: ", device, " to: ", BASE_URL) 
       response = requests.post(f"{BASE_URL}/", json=device)
