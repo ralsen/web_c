@@ -93,15 +93,14 @@ DataStores:
                 - [[OUTFILE, §name, STORE_MODE_DATA],
                    [SELF, §Value_0, STORE_MODE_DATA],
                    [SELF, §Value_1, STORE_MODE_DATA],
-                   [SELF, CONST, "0"],
+                   [SELF, CONST, "0.0"],
                    [INFILE, CONST, "OutTemp.txt"]]
                    
                 - [[OUTFILE, CONST, blabla],
                    [SELF, §Value_0, STORE_MODE_DATA],
                    [SELF, §Value_1, STORE_MODE_DATA],
                    [INFILE, CONST, "OutTemp.txt"],
-                   [§CC_50_E3_3C_17_68, §uptime, STORE_MODE_DATA],
-                   [SELF, CONST, "1"]]
+                   [§CC_50_E3_3C_17_68, §uptime, STORE_MODE_DATA]]
                    
         name: 
             STORE_MODE: "CHANGE"

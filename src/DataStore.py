@@ -10,7 +10,7 @@ import datetime
 import threading
 import re
 import string
-#import rrdtool
+import rrdtool
 
 logger = logging.getLogger(__name__)
 
@@ -210,24 +210,24 @@ class Service():
             print("fehlr in RRD-Verarbeitung: ", err)
 
     def doRRD(self):        
+        try:
+            DBInfo = DS.ds[self.MyName]["Commons"]["RRD_DB"]
+        except: 
+            print("no RRD-handling")
+            return
         print("doing RRD")
-        DBInfo = DS.ds[self.MyName]["Commons"]["RRD_DB"]
         for block in range(len(DBInfo)):
             rrdstr = "N"
             for line in range(len(DBInfo[block])):
                 res = self.getRRDValue(DBInfo[block][line])
                 if DBInfo[block][line][0] == "OUTFILE":
-                    rrdfile = str(res) + "_" + self.MyName + ".rrd"
-                else: rrdstr += ":" + res
-                #print("--->>>", DBInfo[0])
-                #print ("--->>>>", block, " - ", line, " - ", DBInfo[block][line], " - ", res, rrdstr, end="\r\n")
-            print(rrdfile, " - ", rrdstr, end="\r\n\r\n")
-
+                    rrdfile = cfg.RRDPath + str(res) + ".rrd"
+                else: rrdstr += ":" + str(res)
+            print("END ---> ", rrdfile, " - ", rrdstr, end="\r\n\r\n")
+            rrdtool.update(rrdfile, rrdstr)
         return    
 
     def getRRDValue(self, DBStr):
-        #print("getRRDValue: ", DBStr)
-
         if DBStr[0][0] != "§":
             store = self.MyName
         else:
@@ -244,7 +244,6 @@ class Service():
                     value = file.read()
             except:
                 print("File not found: ", cfg.DataPath + value)
-        #print("getRRDValue (store): ", store, " - ", value)
         return value
 
     def merge(self):
