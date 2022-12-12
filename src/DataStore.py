@@ -203,7 +203,7 @@ class Service():
         return data
 
     def DataBase(self):
-        print("???????????????", self.MyName)
+        print("DataBase: ", self.MyName)
         try:
             self.doRRD()
         except Exception as err:    
@@ -213,11 +213,11 @@ class Service():
         print("doing RRD")
         DBInfo = DS.ds[self.MyName]["Commons"]["RRD_DB"]
         for block in range(len(DBInfo)):
-            rrdstr = "N:"
+            rrdstr = "N"
             for line in range(len(DBInfo[block])):
                 res = self.getRRDValue(DBInfo[block][line])
                 if DBInfo[block][line][0] == "OUTFILE":
-                    rrdfile = str(res) + ".rrd"
+                    rrdfile = str(res) + "_" + self.MyName + ".rrd"
                 else: rrdstr += ":" + res
                 #print("--->>>", DBInfo[0])
                 #print ("--->>>>", block, " - ", line, " - ", DBInfo[block][line], " - ", res, rrdstr, end="\r\n")
