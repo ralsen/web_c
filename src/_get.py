@@ -85,11 +85,12 @@ class webserverHandler(BaseHTTPRequestHandler):
       output += '<h2> Okay, got the data at: ' + str((time.time())) +'</h2>'
       output += '</body></html>'
       self.wfile.write(output.encode())
-    except:
+    except Exception as err:
       self.send_error(404, "{}".format(sys.exc_info()[0]))
-      print(sys.exc_info())
+      print(sys.exc_info(), " - ", err)
 
   def update(self, data):
+    print(data)
     try:
       DataSet = dict()
       DataSet[data["MAC"].replace(":", "_")] = data
