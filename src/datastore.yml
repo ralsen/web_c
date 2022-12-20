@@ -131,6 +131,8 @@ DataStores:
             STORE_MODE: "CHANGE"
         Server:
             STORE_MODE: "CHANGE"
+        Port:
+            STORE_MODE: "CHANGE"
         delivPages:  
             STORE_MODE: "CHANGE"
         goodTrans:
@@ -186,6 +188,8 @@ DataStores:
             STORE_MODE: "CHANGE"
         Server:
             STORE_MODE: "CHANGE"
+        Port:
+            STORE_MODE: "CHANGE"
         delivPages:  
             STORE_MODE: "CHANGE"
         goodTrans:
@@ -238,6 +242,8 @@ DataStores:
         PageReload:
             STORE_MODE: "CHANGE"
         Server:
+            STORE_MODE: "CHANGE"
+        Port:
             STORE_MODE: "CHANGE"
         delivPages:  
             STORE_MODE: "CHANGE"
