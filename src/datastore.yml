@@ -93,7 +93,7 @@ DataStores:
                 - [[OUTFILE, §name, STORE_MODE_DATA],
                    [SELF, §Value_0, STORE_MODE_DATA],
                    [SELF, §Value_1, STORE_MODE_DATA],
-                   [SELF, CONST, "0.0"],
+                   [SELF, CONST, "0"],
                    [INFILE, CONST, "OutTemp.txt"]]
                    
                 - [[OUTFILE, CONST, blabla],
@@ -105,6 +105,8 @@ DataStores:
         name: 
             STORE_MODE: "CHANGE"
         IP: 
+            STORE_MODE: "CHANGE"
+        Type:
             STORE_MODE: "CHANGE"
         Version: 
             STORE_MODE: "CHANGE"
@@ -159,6 +161,8 @@ DataStores:
             STORE_MODE: "CHANGE"
         IP: 
             STORE_MODE: "CHANGE"
+        Type:
+            STORE_MODE: "CHANGE"
         Version: 
             STORE_MODE: "CHANGE"
         Hardware: 
@@ -182,11 +186,64 @@ DataStores:
             STORE_MODE: "CHANGE"
         Server:
             STORE_MODE: "CHANGE"
-        delivPages':  
+        delivPages:  
             STORE_MODE: "CHANGE"
-        goodTrans':
+        goodTrans:
             STORE_MODE: "CHANGE"
-        badTrans': 
+        badTrans: 
+            STORE_MODE: "CHANGE"
+        LED:
+            STORE_MODE: "CHANGE"
+        uptime:
+            STORE_MODE: "CHANGE"
+        ontime: 
+            STORE_MODE: "CHANGE"
+        offtime: 
+            STORE_MODE: "CHANGE"
+        cycles:
+            STORE_MODE: "CHANGE"
+        status:
+            STORE_MODE: "CHANGE"
+
+    EC_FA_BC_12_F6_8B:
+        Commons:                # these are Values for the messages/Datasets, they are mandatory and must have always the same names
+            TIMEOUT: 30         # time in units defined in config.yml, set both to 0 if no timeout check is needed
+            RELOAD_TIMEOUT: TransmitCycle     # default time ro reload TIME counter
+            FORMAT: MULTI_CSV
+        name: 
+            STORE_MODE: "CHANGE"
+        IP: 
+            STORE_MODE: "CHANGE"
+        Type:
+            STORE_MODE: "CHANGE"
+        Version: 
+            STORE_MODE: "CHANGE"
+        Hardware: 
+            STORE_MODE: "CHANGE"
+        Network: 
+            STORE_MODE: "CHANGE"
+        APName: 
+            STORE_MODE: "CHANGE"
+        MAC:
+            STORE_MODE: "CHANGE"
+        TransmitCycle:
+            CURRENT_DATA: 20
+            STORE_MODE: "CHANGE"
+        MeasuringCycle:
+            STORE_MODE: "CHANGE"
+        Hash:
+            STORE_MODE: "CHANGE"
+        Size:
+            STORE_MODE: "CHANGE"
+        PageReload:
+            STORE_MODE: "CHANGE"
+        Server:
+            STORE_MODE: "CHANGE"
+        delivPages:  
+            STORE_MODE: "CHANGE"
+        goodTrans:
+            STORE_MODE: "CHANGE"
+        badTrans: 
             STORE_MODE: "CHANGE"
         LED:
             STORE_MODE: "CHANGE"
