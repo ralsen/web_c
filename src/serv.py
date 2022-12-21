@@ -90,7 +90,7 @@ class webserverHandler(BaseHTTPRequestHandler):
       print(sys.exc_info(), " - ", err)
 
   def update(self, data):
-    print(data)
+    #print(cfg.cfg["devices"])
     try:
       DataSet = dict()
       DataSet[data["MAC"].replace(":", "_")] = data
