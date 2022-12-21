@@ -1,0 +1,57 @@
+Hardware:
+  Type: DS1820
+  Hardware: NODEMCU
+  ChipID: 93:1C:1A:E0
+  MAC: 44:17:93:1C:1A:E0
+
+CommonConfig:
+  Name: Wohnzimmer
+  IP_Mode: DHCP
+  PageReload: 10
+  Port: 8080
+  ServerIP: 192.168.1.28
+  Network: janzneu
+  APName: ESPnet
+  Hash: 0x9ae978
+  ConfSize: 0x118
+  TransCycle: 300
+  Version: 2.3g
+
+AppConfig:
+  MeasCycle: 150
+  Sensors:
+    Sensor1:
+      Addr: 28ff76f3c1170505
+      Name: Aquarium
+      Database: temp0
+      Color: "#00FF00"
+    Sensor2:
+      Addr: 28ff76f3c1170505
+      Name: Wohnzimmer
+      Database: temp1
+      Color: "#0000FF"
+    Sensor3:
+      File: OutTemp
+      Name: Aussen
+      Database: temp2
+      Color: "#FFA500"
+  
+  CommonVars:
+    Active: True
+    IP: 192.168.1.26
+    Systick: 1588090826
+    uptime: 6404482
+    UptimeTotal: 0
+    delivPages: 30
+    delivPagesTotal: 0
+    Trans: 0
+    TransTotal: 0
+    goodTrans: 21285
+    goodTransTotal: 0
+    badTrans: 59
+    badTransTotal: 0
+  
+  AppVars:
+    LastValues: 1
+    LastValues: 2
+    LastValues: 3
