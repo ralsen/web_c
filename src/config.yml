@@ -6,6 +6,7 @@ pathes:
     DATA: "data/"                 # not used yet
     LOG: "log/"
     RRD: "rrd/"
+    YML: "yml/"
 
 suffixes:
     log: # "-%Y_%m_%d__%H-%M-%S"     #date and time
@@ -23,6 +24,10 @@ debug:
     verbose: True
 
 devices:
+    -   No_Name_70_03_9F_9A_7C_05
+    -   Schnell_AC_0B_FB_D6_41_74
+    -   Langsam_CC_50_E3_3C_17_68
+
     -   Wohnzimmer_44_17_93_1C_1A_E0
     -   ToF_Sensor_BC_DD_C2_24_3B_F4
     -   Pumpe_CC_50_E3_53_1E_58
