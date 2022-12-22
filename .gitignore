@@ -5,9 +5,6 @@
 .vscode/ipch
 data
 log
-*.rrd
-OutTemp.txt
-*.jpg
-*.pyc
-*.cpp
-*.txt
+rrd
+__pycache__
+
