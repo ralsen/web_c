@@ -10,7 +10,7 @@ import datetime
 import threading
 import re
 import string
-#import rrdtool
+import rrdtool
 
 logger = logging.getLogger(__name__)
 
