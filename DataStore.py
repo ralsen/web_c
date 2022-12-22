@@ -207,6 +207,7 @@ class Service():
         try:
             self.doRRD()
         except Exception as err:    
+            logger.error("fehlr in RRD-Verarbeitung: " + type(err).__name__ + " in: "  + self.MyName)
             print("fehlr in RRD-Verarbeitung: ", err, " - ", self.MyName)
 
     def doRRD(self):
