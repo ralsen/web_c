@@ -10,12 +10,6 @@ import yaml
 import logging
 import socket
 
-x = datetime.datetime.now()
-logging.basicConfig(filename=cfg.LogPath + socket.gethostname()+x.strftime(cfg.logSuffix)+".log",
-                    level=logging.DEBUG,
-                    format='%(asctime)s :: %(levelname)-s :: %(message)s [%(name)s] [%(lineno)s]',
-                    datefmt=cfg.datefmt)
-
 devices = dict()
 
 hostName = "192.168.1.53"
@@ -116,8 +110,8 @@ class webserverHandler(BaseHTTPRequestHandler):
       print ("update went wrong: ", err, " - ", type(err))
 
 def main():
+  cfg.init()
   logging.info("---------- starting ServESP - server ----------")
-
   try:
       server = HTTPServer((hostName, serverPort), webserverHandler)
       print("Server started http://%s:%s" % (hostName, serverPort))

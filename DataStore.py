@@ -28,6 +28,7 @@ class DS():
     def __init__(self, StoreYML):
         for StoreName in StoreYML["DataStores"]:
             print("Building Store for: ", StoreName)
+            logging.info("Building Store for " + StoreName)
             self.ds[StoreName] = dict()
             for ShelfTag, x in StoreYML["DataStores"][StoreName].items():
                 self.ds[StoreName][ShelfTag] = dict()
@@ -52,7 +53,7 @@ class Service():
         threading.Thread(target=self._monitoring_thread, daemon=True).start()        
       
     def _monitoring_thread(self):
-        logger.info("DataStare monitoring started")
+        logger.info("DataStare monitoring for " + self.MyName + " started")
         while True:
             try:
                 DS.ds[self.MyName]["Commons"]["MERGE"]
@@ -223,7 +224,7 @@ class Service():
                 res = self.getRRDValue(DBInfo[block][line])
                 #print("--->: ", res)
                 if DBInfo[block][line][0] == "OUTFILE":
-                    rrdfile = cfg.RRDPath + str(res) + ".rrd"
+                    rrdfile = cfg.dcfg["RRDPath"] + str(res) + ".rrd"
                 else: rrdstr += ":" + str(res)
             #print(rrdfile, " - ", rrdstr, end="\r\n\r\n")
             rrdtool.update(rrdfile, rrdstr)
@@ -244,10 +245,10 @@ class Service():
         else: print("FEHELR")
         if DBStr[0] == "INFILE":
             try:
-                with open(cfg.DataPath + value, "r") as file:
+                with open(cfg.dcfg["DataPath"] + value, "r") as file:
                     value = file.read()
             except:
-                print("File not found: ", cfg.DataPath + value)
+                print("File not found: ", cfg.dcfg["DataPath"] + value)
         #print("getRRDValue (store): ", store, " - ", value)
         return value
 
